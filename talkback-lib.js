@@ -7,7 +7,7 @@ const TalkbackJS = (() => {
   // --- Configuración por defecto ---
   let config = {
     color: '#6366f1',
-    lang: 'es-ES',
+    lang: 'es-MX',
     rate: 0.9,
     pitch: 1,
     remember: true,

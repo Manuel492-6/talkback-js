@@ -11,7 +11,7 @@ const TalkbackJS = (() => {
     rate: 0.9,
     pitch: 1,
     remember: true,
-    tags: ['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI', 'SPAN', 'B', 'STRONG', 'BLOCKQUOTE']
+    tags: ['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI', 'SPAN', 'B', 'STRONG', 'BLOCKQUOTE','A', 'BUTTON', 'LABEL','TD', 'TH','TD']
   };
 
   let isActive = false;

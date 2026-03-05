@@ -1,19 +1,22 @@
-
+/**
+ * TalkbackJS - Librería de Accesibilidad Web (Versión Auto-Ejecutable)
+ * Solo pega este script y el asistente aparecerá automáticamente.
+ */
 
 const TalkbackJS = (() => {
-  // Configuracion
+  // --- Configuración por defecto ---
   let config = {
     color: '#6366f1',
-    lang: 'es-MX',
-    rate: 1.0,
+    lang: 'es-ES',
+    rate: 0.9,
     pitch: 1,
     remember: true,
-    tags: ['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI', 'SPAN', 'B', 'STRONG', 'BLOCKQUOTE','A', 'BUTTON', 'LABEL','TD', 'TH','TD']
+    tags: ['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI', 'SPAN', 'B', 'STRONG', 'BLOCKQUOTE']
   };
 
-  let estaActivo = false;
-  let estaHablando = false;
-  let estaInicializado = false;
+  let isActive = false;
+  let isSpeaking = false;
+  let isInitialized = false;
   const synth = window.speechSynthesis;
   
   let ring, widget, toggleInput, statusText;
@@ -103,11 +106,11 @@ const TalkbackJS = (() => {
   };
 
   const setTalkbackState = (state, announce = true) => {
-    estaActivo = state;
-    statusText.innerText = estaActivo ? "Activo" : "Desactivado";
-    statusText.style.color = estaActivo ? config.color : "#475569";
-    if (config.remember) localStorage.setItem('talkback_active', estaActivo);
-    if (!estaActivo) Detener();
+    isActive = state;
+    statusText.innerText = isActive ? "Activo" : "Desactivado";
+    statusText.style.color = isActive ? config.color : "#475569";
+    if (config.remember) localStorage.setItem('talkback_active', isActive);
+    if (!isActive) stop();
     else if (announce) speak("Asistente de lectura activado");
   };
 
@@ -128,16 +131,16 @@ const TalkbackJS = (() => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = config.lang;
     utterance.rate = config.rate;
-    utterance.onstart = () => { estaHablando = true; if (element) showFocus(element); };
-    utterance.onend = () => { estaHablando = false; hideFocus(); };
+    utterance.onstart = () => { isSpeaking = true; if (element) showFocus(element); };
+    utterance.onend = () => { isSpeaking = false; hideFocus(); };
     synth.speak(utterance);
   };
 
-  const Detener = () => { synth.cancel(); estaHablando = false; hideFocus(); };
+  const stop = () => { synth.cancel(); isSpeaking = false; hideFocus(); };
 
   const initEvents = () => {
     document.addEventListener('mouseover', (e) => {
-      if (!estaActivo || estaHablando || widget.contains(e.target)) return;
+      if (!isActive || isSpeaking || widget.contains(e.target)) return;
       const target = e.target;
       if (config.tags.includes(target.tagName) && target.innerText.trim().length > 1) {
         if (target.children.length < 3) speak(target.innerText, target);
@@ -147,12 +150,12 @@ const TalkbackJS = (() => {
   };
 
   const init = (userConfig = {}) => {
-    if (estaInicializado) return;
+    if (isInitialized) return;
     config = { ...config, ...userConfig };
     injectStyles();
     createUI();
     initEvents();
-    estaInicializado = true;
+    isInitialized = true;
     console.log("%c TalkbackJS Auto-Iniciado ", `background: ${config.color}; color: white; padding: 2px 5px; border-radius: 4px;`);
   };
 

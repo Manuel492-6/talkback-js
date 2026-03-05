@@ -7,7 +7,7 @@ const TalkbackJS = (() => {
     lang: 'es-MX',
     rate: 1.0,
     pitch: 1,
-    remember: false,
+    remember: true,
     tags: ['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI', 'SPAN', 'B', 'STRONG', 'BLOCKQUOTE','A', 'BUTTON', 'LABEL','TD', 'TH','TD']
   };
 
